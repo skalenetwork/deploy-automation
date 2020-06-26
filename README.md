@@ -23,6 +23,7 @@ As a result of the successful deployment following files and folders will be gen
 - `abi.json` file with ABIs and addresses off deployed contracts
 - `openzeppelin` folder with deployment info
 - `build` folder with compiled contracts
+- `deploy_data.json` file with info about latest deplyment
 
 Files and folders will be available in the `artifacts` folder.
 Save those artifacts to the SM repo after deployment!

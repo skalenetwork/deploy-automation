@@ -2,17 +2,16 @@
 
 import os
 import sys
+import json
 import logging
+import datetime
 
 import subprocess
-from subprocess import PIPE
-
 
 import click
-from skale import Skale
 from skale.utils.account_tools import check_ether_balance
+from skale.wallets.web3_wallet import Web3Wallet
 from skale.utils.web3_utils import init_web3
-from web3 import Web3
 
 from utils.logger import init_logger, LOG_FILE_PATH
 from utils.config import ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS
@@ -45,9 +44,12 @@ def deploy():
     if not check_deploy_vars():
         logger.error('You should provide ENDPOINT, ETH_PRIVATE_KEY and MANAGER_TAG')
         exit(1)
+    
+    web3 = init_web3(ENDPOINT)
+    wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
 
-    check_balance(ADDRESS)
-    logger.info(f'Starting SM deployment: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\n')
+    check_balance(wallet.address)
+    logger.info(f'Starting SM deployment: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\nAddress: {wallet.address}\n')
 
     res = run_cmd([f'bash {PROJECT_DIR}/deploy-manager.sh'], {
         'ENDPOINT': ENDPOINT,
@@ -59,6 +61,16 @@ def deploy():
         exit(res.returncode)
     logger.info(f'SM deployed!\n{LONG_LINE}\n')
     check_balance(ADDRESS)
+
+    time = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H:%M:%S")
+    deploy_info = {
+        'address': wallet.address,
+        'time': time,
+        'manager_tag': MANAGER_TAG,
+        'endpoint': ENDPOINT,
+    }
+    with open(f'{PROJECT_DIR}/artifacts/deploy_data.json', 'w', encoding='utf-8') as f:
+        json.dump(deploy_info, f, ensure_ascii=False, indent=4)
 
 
 @cli.command('balance', help='Check ETH balance of the address')
