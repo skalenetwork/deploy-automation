@@ -7,4 +7,5 @@ abi.json
 
 __pycache__/
 
-.openzeppelin
+openzeppelin/
+artifacts/

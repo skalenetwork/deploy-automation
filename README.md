@@ -21,8 +21,10 @@ python main.py deploy
 As a result of the successful deployment following files and folders will be generated:
 
 - `abi.json` file with ABIs and addresses off deployed contracts
-- `.openzeppelin` folder with deployment info
+- `openzeppelin` folder with deployment info
+- `build` folder with compiled contracts
 
+Files and folders will be available in the `artifacts` folder.
 Save those artifacts to the SM repo after deployment!
 
 ### Check address balance

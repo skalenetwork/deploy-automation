@@ -9,6 +9,9 @@ set -o pipefail
 
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+rm -rf $DIR/artifacts/openzeppelin
+mkdir $DIR/artifacts/openzeppelin
+
 docker pull skalenetwork/skale-manager:$MANAGER_TAG
 docker run \
     -v $DIR/artifacts/contracts_data:/usr/src/manager/data \
