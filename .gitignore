@@ -1,0 +1,8 @@
+.env
+venv
+contracts_data
+*.log
+.vscode
+abi.json
+
+__pycache__/
