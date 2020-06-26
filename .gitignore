@@ -6,3 +6,5 @@ contracts_data
 abi.json
 
 __pycache__/
+
+.openzeppelin

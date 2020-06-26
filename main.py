@@ -49,12 +49,14 @@ def deploy():
     check_balance(ADDRESS)
     logger.info(f'Starting SM deployment: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\n')
 
-    run_cmd([f'bash {PROJECT_DIR}/deploy-manager.sh'], {
+    res = run_cmd([f'bash {PROJECT_DIR}/deploy-manager.sh'], {
         'ENDPOINT': ENDPOINT,
         'ETH_PRIVATE_KEY': ETH_PRIVATE_KEY,
         'MANAGER_TAG': MANAGER_TAG,
     }, shell=True)
-
+    if res.returncode:
+        logger.error('Deployment failed!')
+        exit(res.returncode)
     logger.info(f'SM deployed!\n{LONG_LINE}\n')
     check_balance(ADDRESS)
 

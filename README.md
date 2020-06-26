@@ -1,7 +1,5 @@
 # SM deployment automation
 
-## 
-
 ## Usage
 
 `.env` file with variables should be placed in file in project root
@@ -17,6 +15,15 @@
 ```bash
 python main.py deploy
 ```
+
+#### Deployment artifacts
+
+As a result of the successful deployment following files and folders will be generated:
+
+- `abi.json` file with ABIs and addresses off deployed contracts
+- `.openzeppelin` folder with deployment info
+
+Save those artifacts to the SM repo after deployment!
 
 ### Check address balance
 
