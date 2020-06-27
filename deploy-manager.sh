@@ -19,6 +19,7 @@ docker run \
     --mount type=volume,dst=/usr/src/manager/.openzeppelin,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$DIR/artifacts/openzeppelin \
     -e GASPRICE=$GASPRICE \
     -e ENDPOINT=$ENDPOINT \
+    -e PRODUCTION=$PRODUCTION \
     -e PRIVATE_KEY=$ETH_PRIVATE_KEY \
     skalenetwork/skale-manager:$MANAGER_TAG \
     npx truffle migrate --network unique 2>&1 | tee -a sm-container.log

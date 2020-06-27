@@ -8,6 +8,8 @@ ETH_PRIVATE_KEY = os.environ.get('ETH_PRIVATE_KEY')
 MANAGER_TAG = os.environ.get('MANAGER_TAG')
 ADDRESS = os.environ.get('ADDRESS')
 GASPRICE = os.environ.get('GASPRICE')
+GASPRICE = os.environ.get('GASPRICE')
+PRODUCTION = os.environ.get('PRODUCTION')
 
 LONG_LINE = '=' * 60
 
