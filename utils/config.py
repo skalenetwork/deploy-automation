@@ -12,3 +12,5 @@ LONG_LINE = '=' * 60
 
 CURRENT_FILE_LOCATION = os.path.dirname(os.path.realpath(__file__))
 PROJECT_DIR = os.path.join(CURRENT_FILE_LOCATION, os.pardir)
+
+ABI_FILEPATH = os.path.join(PROJECT_DIR, 'artifacts', 'abi.json')

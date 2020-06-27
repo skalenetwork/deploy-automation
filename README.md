@@ -37,3 +37,12 @@ Save those artifacts to the SM repo after deployment!
 ```bash
 python main.py balance
 ```
+
+### Build custom SM container
+
+1. Go to skale-manager repo
+2. Run:
+
+```bash
+MANAGER_TAG=x.x.x docker build -t skalenetwork/skale-mananager:$MANAGER_TAG .
+```

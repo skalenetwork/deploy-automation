@@ -9,12 +9,13 @@ import datetime
 import subprocess
 
 import click
+from skale import Skale
 from skale.utils.account_tools import check_ether_balance
-from skale.wallets.web3_wallet import Web3Wallet
+from skale.wallets.web3_wallet import Web3Wallet, generate_wallet
 from skale.utils.web3_utils import init_web3
 
 from utils.logger import init_logger, LOG_FILE_PATH
-from utils.config import ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS
+from utils.config import ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS, ABI_FILEPATH
 
 
 init_logger(LOG_FILE_PATH, enable_stream_handler=True)
@@ -44,7 +45,7 @@ def deploy():
     if not check_deploy_vars():
         logger.error('You should provide ENDPOINT, ETH_PRIVATE_KEY and MANAGER_TAG')
         exit(1)
-    
+
     web3 = init_web3(ENDPOINT)
     wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
 
@@ -84,6 +85,66 @@ def balance():
 def check_balance(address):
     web3 = init_web3(ENDPOINT)
     return check_ether_balance(web3, address)
+
+
+@cli.command('set-roles', help='')
+def set_roles():
+    web3 = init_web3(ENDPOINT)
+    owner_wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
+    skale = Skale(ENDPOINT, ABI_FILEPATH, owner_wallet)
+    wallets = setup_wallets(web3)
+    grant_admin_role(skale, wallets[0])
+    grant_schain_creator_role(skale, wallets[1])
+
+
+def setup_wallets(web3):
+    wallets = generate_wallets(web3, 2)
+    for wallet in wallets:
+        logger.warning(f'Generated wallet: {wallet.address}, PK: {wallet._private_key}, save it somewhere!')
+    role_keys = [
+        {
+            'address': wallets[0].address,
+            'private_key': wallets[0]._private_key,
+            'role': 'DEFAULT_ADMIN_ROLE'
+        },
+        {
+            'address': wallets[1].address,
+            'private_key': wallets[1]._private_key,
+            'role': 'SCHAIN_CREATOR_ROLE'
+        }
+    ]
+    time = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H:%M:%S")
+    with open(f'{PROJECT_DIR}/role_keys-{time}.json', 'w', encoding='utf-8') as f:
+        json.dump(role_keys, f, ensure_ascii=False, indent=4)
+    return wallets
+
+
+def grant_admin_role(skale, admin_wallet):
+    default_admin_role = skale.manager.default_admin_role()
+    skale.manager.grant_role(
+        default_admin_role,
+        admin_wallet.address,
+        wait_for=True
+    )
+    has_admin_role = skale.manager.has_role(default_admin_role, admin_wallet.address)
+    if has_admin_role:
+        logger.info(f'{admin_wallet.address} now have admin permissions!')
+    else:
+        logger.error(f'Permissions for {admin_wallet.address} was not granted!')
+
+
+def grant_schain_creator_role(skale, schain_creator_wallet):
+    schain_creator_role = skale.schains.schain_creator_role()
+    skale.schains.grant_role(
+        schain_creator_role,
+        schain_creator_wallet.address,
+        wait_for=True
+    )
+    logger.info(f'{schain_creator_wallet.address} now have sChain creation permissions!')
+
+
+def generate_wallets(web3, n_wallets):
+    return [generate_wallet(web3) for i in range(0, n_wallets)]
 
 
 if __name__ == "__main__":
