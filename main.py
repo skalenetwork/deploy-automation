@@ -15,7 +15,8 @@ from skale.wallets.web3_wallet import Web3Wallet, generate_wallet
 from skale.utils.web3_utils import init_web3
 
 from utils.logger import init_logger, LOG_FILE_PATH
-from utils.config import ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS, ABI_FILEPATH
+from utils.config import (ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS,
+                          ABI_FILEPATH, GAS_PRICE)
 
 
 init_logger(LOG_FILE_PATH, enable_stream_handler=True)
@@ -56,6 +57,7 @@ def deploy():
         'ENDPOINT': ENDPOINT,
         'ETH_PRIVATE_KEY': ETH_PRIVATE_KEY,
         'MANAGER_TAG': MANAGER_TAG,
+        'GAS_PRICE': GAS_PRICE
     }, shell=True)
     if res.returncode:
         logger.error('Deployment failed!')

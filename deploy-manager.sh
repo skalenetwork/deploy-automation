@@ -17,6 +17,7 @@ docker run \
     -v $DIR/artifacts/contracts_data:/usr/src/manager/data \
     -v $DIR/artifacts/build:/usr/src/manager/build \
     --mount type=volume,dst=/usr/src/manager/.openzeppelin,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$DIR/artifacts/openzeppelin \
+    -e GAS_PRICE=$GAS_PRICE \
     -e ENDPOINT=$ENDPOINT \
     -e PRIVATE_KEY=$ETH_PRIVATE_KEY \
     skalenetwork/skale-manager:$MANAGER_TAG \
