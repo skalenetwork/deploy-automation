@@ -40,6 +40,17 @@ Save those artifacts to the SM repo after deployment!
 python main.py balance
 ```
 
+### Set roles
+
+#### Required variables
+
+- `ENDPOINT` - Ethereum network endpoint
+- `ETH_PRIVATE_KEY` - Ethereum private key that will be used for deploy
+
+```bash
+python main.py set-roles
+```
+
 ### Build custom SM container
 
 1. Go to skale-manager repo
