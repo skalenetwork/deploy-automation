@@ -16,7 +16,7 @@ from skale.utils.web3_utils import init_web3
 
 from utils.logger import init_logger, LOG_FILE_PATH
 from utils.config import (ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS,
-                          ABI_FILEPATH, GAS_PRICE)
+                          ABI_FILEPATH, GASPRICE)
 
 
 init_logger(LOG_FILE_PATH, enable_stream_handler=True)
@@ -57,7 +57,7 @@ def deploy():
         'ENDPOINT': ENDPOINT,
         'ETH_PRIVATE_KEY': ETH_PRIVATE_KEY,
         'MANAGER_TAG': MANAGER_TAG,
-        'GAS_PRICE': GAS_PRICE
+        'GASPRICE': GASPRICE
     }, shell=True)
     if res.returncode:
         logger.error('Deployment failed!')

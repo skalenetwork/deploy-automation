@@ -7,7 +7,7 @@ ENDPOINT = os.environ.get('ENDPOINT')
 ETH_PRIVATE_KEY = os.environ.get('ETH_PRIVATE_KEY')
 MANAGER_TAG = os.environ.get('MANAGER_TAG')
 ADDRESS = os.environ.get('ADDRESS')
-GAS_PRICE = os.environ.get('GAS_PRICE')
+GASPRICE = os.environ.get('GASPRICE')
 
 LONG_LINE = '=' * 60
 
