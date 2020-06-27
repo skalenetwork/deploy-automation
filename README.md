@@ -11,6 +11,8 @@
 - `ENDPOINT` - Ethereum network endpoint
 - `ETH_PRIVATE_KEY` - Ethereum private key that will be used for deploy
 - `MANAGER_TAG` - Tag of the skalenetwork/skale-manager:$MANAGER_TAG container
+- `GAS_PRICE` - Gas price for truffle config
+- `PRODUCTION` - true/false - type of contracts
 
 ```bash
 python main.py deploy
