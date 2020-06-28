@@ -150,6 +150,18 @@ def generate_wallets(web3, n_wallets):
     return [generate_wallet(web3) for i in range(0, n_wallets)]
 
 
+@cli.command('set-test-epoch', help='')
+def set_epoch_and_delta():   
+    web3 = init_web3(ENDPOINT)
+    owner_wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
+    skale = Skale(ENDPOINT, ABI_FILEPATH, owner_wallet)
+    new_epoch_in_sec = 45 * 60
+    new_delta_in_sec = 10 * 60
+    skale.constants_holder.set_periods(new_epoch_in_sec, new_delta_in_sec)
+    print("new_reward_period", skale.constants_holder.get_reward_period())
+    print("new_delta_period", skale.constants_holder.get_delta_period())
+
+
 if __name__ == "__main__":
     args = sys.argv
     logger.debug(f'\n{LONG_LINE}\nRunning CMD: {" ".join(str(x) for x in args)}\n{LONG_LINE}')
