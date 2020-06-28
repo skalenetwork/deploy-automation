@@ -109,7 +109,7 @@ def setup_wallets(web3):
         {
             'address': wallets[0].address,
             'private_key': wallets[0]._private_key,
-            'role': 'DEFAULT_ADMIN_ROLE'
+            'role': 'ADMIN_ROLE'
         },
         {
             'address': wallets[1].address,
@@ -124,13 +124,13 @@ def setup_wallets(web3):
 
 
 def grant_admin_role(skale, admin_wallet):
-    default_admin_role = skale.manager.default_admin_role()
+    admin_role = skale.manager.admin_role()
     skale.manager.grant_role(
-        default_admin_role,
+        admin_role,
         admin_wallet.address,
         wait_for=True
     )
-    has_admin_role = skale.manager.has_role(default_admin_role, admin_wallet.address)
+    has_admin_role = skale.manager.has_role(admin_role, admin_wallet.address)
     if has_admin_role:
         logger.info(f'{admin_wallet.address} now have admin permissions!')
     else:
