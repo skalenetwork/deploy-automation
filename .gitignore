@@ -11,3 +11,5 @@ openzeppelin/
 artifacts/
 artifacts*
 role_keys*
+
+.DS_Store

@@ -13,7 +13,7 @@ rm -rf $DIR/artifacts
 mkdir $DIR/artifacts
 mkdir $DIR/artifacts/openzeppelin
 
-# docker pull skalenetwork/skale-manager:$MANAGER_TAG
+docker pull skalenetwork/skale-manager:$MANAGER_TAG
 docker run \
     -v $DIR/artifacts/contracts_data:/usr/src/manager/data \
     -v $DIR/artifacts/build:/usr/src/manager/build \

@@ -4,6 +4,40 @@
 
 `.env` file with variables should be placed in file in project root
 
+### 🚀 FULL PROCEDURE
+
+1) Set values in `.env`
+
+```bash
+ENDPOINT=
+MANAGER_TAG=
+ADDRESS=
+ETH_PRIVATE_KEY=
+GASPRICE=
+PRODUCTION=true/false
+NETWORK=mainnet
+```
+
+2) Deploy contracts
+
+```bash
+python main.py deploy
+```
+
+3) Set roles
+
+```bash
+python main.py set-roles
+```
+
+4) Check contstants
+
+```bash
+python main.py check-constants
+```
+
+5) Save `artifacts` folder and `role_keys-{DATE}.json` file somewhere!
+
 ### Deploy SM contracts
 
 #### Required variables

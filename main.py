@@ -151,12 +151,35 @@ def generate_wallets(web3, n_wallets):
     return [generate_wallet(web3) for i in range(0, n_wallets)]
 
 
+
+@cli.command('check-constants', help='')
+def _check_constants():
+    web3 = init_web3(ENDPOINT)
+    skale = Skale(ENDPOINT, ABI_FILEPATH)
+    check_constants(skale)
+    
+
+def check_constants(skale):
+    reward_period = skale.constants_holder.get_reward_period()
+    delta_period = skale.constants_holder.get_delta_period()
+    check_time = skale.constants_holder.get_check_time()
+
+    logger.info(f'reward_period: {reward_period}')
+    logger.info(f'delta_period: {delta_period}')
+    logger.info(f'check_time: {check_time}')
+
+    if reward_period != 86400 or delta_period != 3600 or check_time != 300:
+        logger.warning('SM with testnet constants!')
+    else:
+        logger.info('SM with mainnet constants!')
+
+
 @cli.command('set-test-epoch', help='')
 def set_epoch_and_delta():
     web3 = init_web3(ENDPOINT)
     owner_wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
     skale = Skale(ENDPOINT, ABI_FILEPATH, owner_wallet)
-    new_epoch_in_sec = 45 * 60
+    new_epoch_in_sec = 30 * 60
     new_delta_in_sec = 10 * 60
     skale.constants_holder.set_periods(new_epoch_in_sec, new_delta_in_sec)
     print("new_reward_period", skale.constants_holder.get_reward_period())
