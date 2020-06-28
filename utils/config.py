@@ -10,6 +10,7 @@ ADDRESS = os.environ.get('ADDRESS')
 GASPRICE = os.environ.get('GASPRICE')
 GASPRICE = os.environ.get('GASPRICE')
 PRODUCTION = os.environ.get('PRODUCTION')
+NETWORK = os.environ.get('NETWORK')
 
 LONG_LINE = '=' * 60
 

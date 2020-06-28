@@ -16,7 +16,7 @@ from skale.utils.web3_utils import init_web3
 
 from utils.logger import init_logger, LOG_FILE_PATH
 from utils.config import (ENDPOINT, ETH_PRIVATE_KEY, MANAGER_TAG, LONG_LINE, PROJECT_DIR, ADDRESS,
-                          ABI_FILEPATH, GASPRICE, PRODUCTION)
+                          ABI_FILEPATH, GASPRICE, PRODUCTION, NETWORK)
 
 
 init_logger(LOG_FILE_PATH, enable_stream_handler=True)
@@ -58,7 +58,8 @@ def deploy():
         'ETH_PRIVATE_KEY': ETH_PRIVATE_KEY,
         'MANAGER_TAG': MANAGER_TAG,
         'GASPRICE': GASPRICE,
-        'PRODUCTION': PRODUCTION
+        'PRODUCTION': PRODUCTION,
+        'NETWORK': NETWORK,
     }, shell=True)
     if res.returncode:
         logger.error('Deployment failed!')
@@ -151,7 +152,7 @@ def generate_wallets(web3, n_wallets):
 
 
 @cli.command('set-test-epoch', help='')
-def set_epoch_and_delta():   
+def set_epoch_and_delta():
     web3 = init_web3(ENDPOINT)
     owner_wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
     skale = Skale(ENDPOINT, ABI_FILEPATH, owner_wallet)

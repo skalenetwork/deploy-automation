@@ -23,8 +23,8 @@ docker run \
     -e PRODUCTION=$PRODUCTION \
     -e PRIVATE_KEY=$ETH_PRIVATE_KEY \
     skalenetwork/skale-manager:$MANAGER_TAG \
-    npx truffle migrate --network mainnet 2>&1 | tee -a sm-container.log
+    npx truffle migrate --network $NETWORK 2>&1 | tee -a sm-container.log
 
-cp $DIR/artifacts/contracts_data/mainnet.json $DIR/artifacts/abi.json
+cp $DIR/artifacts/contracts_data/$NETWORK.json $DIR/artifacts/abi.json
 
 cp -R $DIR/artifacts $DIR/artifacts-$(date +%Y%m%d%H%M%S)
