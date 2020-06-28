@@ -9,4 +9,5 @@ __pycache__/
 
 openzeppelin/
 artifacts/
+artifacts*
 role_keys*
