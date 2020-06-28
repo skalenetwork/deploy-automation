@@ -9,8 +9,8 @@ set -o pipefail
 
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-cp -R $DIR/artifacts/openzeppelin /tmp/openzeppelin
-rm -rf $DIR/artifacts/openzeppelin
+rm -rf $DIR/artifacts
+mkdir $DIR/artifacts
 mkdir $DIR/artifacts/openzeppelin
 
 # docker pull skalenetwork/skale-manager:$MANAGER_TAG
@@ -23,6 +23,8 @@ docker run \
     -e PRODUCTION=$PRODUCTION \
     -e PRIVATE_KEY=$ETH_PRIVATE_KEY \
     skalenetwork/skale-manager:$MANAGER_TAG \
-    npx truffle migrate --network unique 2>&1 | tee -a sm-container.log
+    npx truffle migrate --network mainnet 2>&1 | tee -a sm-container.log
 
-cp $DIR/artifacts/contracts_data/unique.json $DIR/artifacts/abi.json
+cp $DIR/artifacts/contracts_data/mainnet.json $DIR/artifacts/abi.json
+
+cp -R $DIR/artifacts $DIR/artifacts-$(date +%Y%m%d%H%M%S)
