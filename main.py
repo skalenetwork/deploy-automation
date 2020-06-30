@@ -41,6 +41,43 @@ def run_cmd(cmd, env={}, shell=False):
     return res
 
 
+@cli.command('update', help='Update SKALE Manager contracts')
+def update():
+    if not check_deploy_vars():
+        logger.error('You should provide ENDPOINT, ETH_PRIVATE_KEY and MANAGER_TAG')
+        exit(1)
+
+    web3 = init_web3(ENDPOINT)
+    wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
+
+    check_balance(wallet.address)
+    logger.info(f'Starting SM update: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\nAddress: {wallet.address}\n')
+
+    res = run_cmd([f'bash {PROJECT_DIR}/upgrade-manager.sh'], {
+        'ENDPOINT': ENDPOINT,
+        'ETH_PRIVATE_KEY': ETH_PRIVATE_KEY,
+        'MANAGER_TAG': MANAGER_TAG,
+        'GASPRICE': GASPRICE,
+        'PRODUCTION': PRODUCTION,
+        'NETWORK': NETWORK,
+    }, shell=True)
+    if res.returncode:
+        logger.error('Update failed!')
+        exit(res.returncode)
+    logger.info(f'SM updated!\n{LONG_LINE}\n')
+    check_balance(ADDRESS)
+
+    time = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H:%M:%S")
+    update_info = {
+        'address': wallet.address,
+        'time': time,
+        'manager_tag': MANAGER_TAG,
+        'endpoint': ENDPOINT,
+    }
+    with open(f'{PROJECT_DIR}/artifacts/update_data.json', 'w', encoding='utf-8') as f:
+        json.dump(update_info, f, ensure_ascii=False, indent=4)
+
+
 @cli.command('deploy', help='Deploy SKALE Manager contracts')
 def deploy():
     if not check_deploy_vars():
