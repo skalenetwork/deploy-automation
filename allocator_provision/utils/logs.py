@@ -17,9 +17,10 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
 import logging
 import logging.handlers as py_handlers
-from logging import Formatter
+from logging import Formatter, StreamHandler
 
 from utils.helper import safe_mk_dirs
 from utils.constants import (LOG_FORMAT, LOG_BACKUP_COUNT,
@@ -31,11 +32,18 @@ def init_log_dir():
     safe_mk_dirs(LOG_DATA_PATH)
 
 
-def init_logger():
+def init_logger(enable_stream_handler=False):
     f_handler = get_file_handler(LOG_FILEPATH, logging.INFO)
     debug_f_handler = get_file_handler(DEBUG_LOG_FILEPATH, logging.DEBUG)
+
+    if enable_stream_handler:
+        stream_handler = StreamHandler(sys.stderr)
+        stream_handler.setLevel(logging.INFO)
+        formatter = Formatter(LOG_FORMAT)
+        stream_handler.setFormatter(formatter)
+
     logging.basicConfig(level=logging.DEBUG, handlers=[
-        f_handler, debug_f_handler])
+        f_handler, debug_f_handler, stream_handler])
 
 
 def get_file_handler(log_filepath, log_level):

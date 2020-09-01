@@ -110,7 +110,7 @@ sys.excepthook = handle_exception
 
 if __name__ == '__main__':
     init_log_dir()
-    init_logger()
+    init_logger(enable_stream_handler=True)
     logger.info(f'cmd: {" ".join(str(x) for x in sys.argv)}, v.{__version__}')
     cmd_collection = click.CommandCollection(sources=[cli])
     try:
