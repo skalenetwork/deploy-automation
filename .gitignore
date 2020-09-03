@@ -13,3 +13,7 @@ artifacts*
 role_keys*
 
 .DS_Store
+
+*.csv
+allocator.json
+pk_file
