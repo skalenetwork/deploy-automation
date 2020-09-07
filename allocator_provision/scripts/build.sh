@@ -41,16 +41,18 @@ EXECUTABLE_NAME=allocator-$VERSION-$OS
 
 UNAME_RES="$(uname -s)"
 
+cd $PARENT_DIR
+
 if [[ "$UNAME_RES" == "Darwin"  ]]; then
     echo "Building macOS binary..."
-    pyinstaller --onefile main.spec --hidden-import=eth_hash.backends.pysha3 \
+    pyinstaller --onefile $PARENT_DIR/main.spec --hidden-import=eth_hash.backends.pysha3 \
         --hidden-import=pkg_resources.py2_warn --additional-hooks-dir pyinstaller-hooks \
         --runtime-hook pyinstaller-hooks/pyi_rth__tkinter.py \
         --add-binary='/System/Library/Frameworks/Tk.framework/Tk':'tk' \
         --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' 
 else
     echo "Building Linux binary..."
-    pyinstaller --onefile main.spec --hidden-import=eth_hash.backends.pysha3 \
+    pyinstaller --onefile $PARENT_DIR/main.spec --hidden-import=eth_hash.backends.pysha3 \
         --hidden-import=pkg_resources.py2_warn
 fi
 
