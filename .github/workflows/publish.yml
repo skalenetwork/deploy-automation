@@ -1,13 +1,13 @@
 name: Build and publish
-# on: push
-on:
-  pull_request:
-    types: [closed]
-    branches:
-      - master
-      - develop
-      - beta
-      - stable
+on: push
+# on:
+#   pull_request:
+#     types: [closed]
+#     branches:
+#       - master
+#       - develop
+#       - beta
+#       - stable
 
 jobs:
   create_release:
@@ -24,7 +24,7 @@ jobs:
         run: git submodule update --init
       - name: Set Versions
         run: |
-          bash ./scripts/set_versions_ga.sh
+          bash ./allocator_provision/scripts/set_versions_ga.sh
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -49,9 +49,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            asset_name: sk-alloc-${{ needs.create_release.outputs.version }}-Linux-x86_64
+            asset_name: allocator-${{ needs.create_release.outputs.version }}-Linux-x86_64
           - os: macos-latest
-            asset_name: sk-alloc-${{ needs.create_release.outputs.version }}-Darwin-x86_64
+            asset_name: allocator-${{ needs.create_release.outputs.version }}-Darwin-x86_64
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
