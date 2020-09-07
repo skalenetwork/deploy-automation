@@ -8,8 +8,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export BRANCH=${GITHUB_REF##*/}
 echo "Branch $BRANCH"
 
-export VERSION=$(python $PROJECT_DIR/allocator_provision/setup.py --version)
-export VERSION=$(bash $PROJECT_DIR/helper-scripts/calculate_version.sh)
+export VERSION=$(python $DIR/../setup.py --version)
+export VERSION=$(bash $DIR/../../helper-scripts/calculate_version.sh)
 
 echo "::set-env name=VERSION::$VERSION"
 echo "Version $VERSION"
