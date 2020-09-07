@@ -41,7 +41,7 @@ def load_csv_dict(path_to_file):
     with open(path_to_file, mode='r') as infile:
         reader = csv.DictReader(infile)
         for row in reader:
-            if row['name'] is not '' and bool(distutils.util.strtobool(row['added'])) is False:
+            if row['name'] != '' and bool(distutils.util.strtobool(row['added'])) is False:
                 items.append(dict(row))
         return items
 
