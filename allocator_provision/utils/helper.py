@@ -52,21 +52,6 @@ def download_file(url, filepath):
         print(f'Couldn\'t donwload file: {url}')
 
 
-def config_exists():
-    return os.path.exists(SKALE_VAL_CONFIG_FILE)
-
-
-def read_config():
-    config = read_json(SKALE_VAL_CONFIG_FILE)
-    config['abi'] = read_json(SKALE_VAL_ABI_FILE)
-    return config
-
-
-def get_config():
-    if config_exists():
-        return read_config()
-
-
 def abort_if_false(ctx, param, value):
     if not value:
         ctx.abort()

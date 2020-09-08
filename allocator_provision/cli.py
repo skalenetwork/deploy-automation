@@ -38,13 +38,11 @@
 
 import sys
 import logging
-import inspect
 import traceback
 
 import click
 
 from utils.logs import init_logger, init_log_dir
-from utils.helper import safe_mk_dirs, write_json, download_file
 # from utils.constants import (SKALE_ALLOCATOR_CONFIG_FOLDER, SKALE_ALLOCATOR_CONFIG_FILE,
 #                              SKALE_ALLOCATOR_ABI_FILE, LONG_LINE, WALLET_TYPES)
 

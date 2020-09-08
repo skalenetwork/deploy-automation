@@ -51,7 +51,8 @@ def update():
     wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
 
     check_balance(wallet.address)
-    logger.info(f'Starting SM update: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\nAddress: {wallet.address}\n')
+    logger.info(f'Starting SM update: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\nAddress:\
+        {wallet.address}\n')
 
     res = run_cmd([f'bash {PROJECT_DIR}/upgrade-manager.sh'], {
         'ENDPOINT': ENDPOINT,
@@ -88,7 +89,8 @@ def deploy():
     wallet = Web3Wallet(ETH_PRIVATE_KEY, web3)
 
     check_balance(wallet.address)
-    logger.info(f'Starting SM deployment: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\nAddress: {wallet.address}\n')
+    logger.info(f'Starting SM deployment: \nTag: {MANAGER_TAG}\nEndpoint: {ENDPOINT}\nAddress:\
+        {wallet.address}\n')
 
     res = run_cmd([f'bash {PROJECT_DIR}/deploy-manager.sh'], {
         'ENDPOINT': ENDPOINT,
@@ -141,7 +143,8 @@ def set_roles():
 def setup_wallets(web3):
     wallets = generate_wallets(web3, 2)
     for wallet in wallets:
-        logger.warning(f'Generated wallet: {wallet.address}, PK: {wallet._private_key}, save it somewhere!')
+        logger.warning(f'Generated wallet: {wallet.address}, PK: {wallet._private_key},\
+             save it somewhere!')
     role_keys = [
         {
             'address': wallets[0].address,
@@ -188,13 +191,11 @@ def generate_wallets(web3, n_wallets):
     return [generate_wallet(web3) for i in range(0, n_wallets)]
 
 
-
 @cli.command('check-constants', help='')
 def _check_constants():
-    web3 = init_web3(ENDPOINT)
     skale = Skale(ENDPOINT, ABI_FILEPATH)
     check_constants(skale)
-    
+
 
 def check_constants(skale):
     reward_period = skale.constants_holder.get_reward_period()

@@ -17,3 +17,7 @@ role_keys*
 *.csv
 allocator.json
 pk_file
+allocator_provision/info.py
+
+build/
+dist/
