@@ -2,10 +2,6 @@
 
 import mock
 
-from skale.wallets.web3_wallet import generate_wallet
-from skale.utils.contracts_provision.main import _skip_evm_time
-from skale.utils.contracts_provision import MONTH_IN_SECONDS
-
 from cli import (
     test, _add_beneficiates, _create_plans
 )
@@ -23,7 +19,7 @@ def test_test(runner, skale_allocator):
 def test_create_plans(runner, skale_allocator):
     plans_before = skale_allocator.allocator.get_all_plans()
     with mock.patch('click.confirm', return_value=True):
-        result = runner.invoke(
+        runner.invoke(
             _create_plans,
             [
                 TEST_PK_FILE,
@@ -69,7 +65,7 @@ def test_create_plans(runner, skale_allocator):
 
 def ttest_add_beneficiates(runner, skale_allocator):
     # todo: show all plans
-    result = runner.invoke(
+    runner.invoke(
         _add_beneficiates,
         [
             TEST_PK_FILE,
