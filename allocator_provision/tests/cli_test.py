@@ -65,13 +65,16 @@ def test_create_plans(runner, skale_allocator):
 
 def ttest_add_beneficiates(runner, skale_allocator):
     # todo: show all plans
-    runner.invoke(
-        _add_beneficiates,
-        [
-            TEST_PK_FILE,
-            TEST_BENEFICIATES_CSV_FILEPATH,
-            '--endpoint', ENDPOINT
-        ]
-    )
+    with mock.patch('click.confirm', return_value=True):
+        result = runner.invoke(
+            _add_beneficiates,
+            [
+                TEST_PK_FILE,
+                TEST_BENEFICIATES_CSV_FILEPATH,
+                '--endpoint', ENDPOINT
+            ]
+        )
+    print(result.output)
+    assert False
     # todo: _add_beneficiates
     pass
