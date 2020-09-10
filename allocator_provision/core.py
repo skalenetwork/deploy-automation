@@ -19,8 +19,6 @@
 
 import csv
 import logging
-import distutils
-import distutils.util
 
 import click
 
@@ -31,7 +29,7 @@ from skale.contracts.allocator.allocator import TimeUnit
 
 from utils.print_formatters import print_plans_table, print_beneficiates_table
 from utils.constants import ABI_FILEPATH
-from utils.helper import to_wei
+from utils.helper import to_wei, str_to_bool
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +39,7 @@ def load_csv_dict(path_to_file):
     with open(path_to_file, mode='r') as infile:
         reader = csv.DictReader(infile)
         for row in reader:
-            if row['name'] != '' and bool(distutils.util.strtobool(row['added'])) is False:
+            if row['name'] != '' and str_to_bool(row['added']) is False:
                 items.append(dict(row))
         return items
 
@@ -65,6 +63,9 @@ def add_beneficiates(csv_filepath, pk_file, dry_run, endpoint):
 
 def create_plans(csv_filepath, pk_file, dry_run, endpoint):
     plans_data = load_csv_dict(csv_filepath)
+
+    print(plans_data)
+    print(csv_filepath)
     print('Following plans will be created: \n')
     print_plans_table(plans_data)
 
@@ -78,6 +79,7 @@ def create_plans(csv_filepath, pk_file, dry_run, endpoint):
         print('Please provide an endpoint')
         return
     create_plans_allocator(plans_data, pk_file, endpoint)
+    print('\nAll plans are successfully created!')
 
 
 def create_plans_allocator(plans_data, pk_file, endpoint):
@@ -90,8 +92,8 @@ def create_plans_allocator(plans_data, pk_file, endpoint):
             total_vesting_duration=int(plan['total_vesting_duration']),
             vesting_interval_time_unit=vesting_interval_time_unit,
             vesting_interval=int(plan['vesting_interval']),
-            can_delegate=bool(plan['can_delegate']),
-            is_terminatable=bool(plan['is_terminatable']),
+            can_delegate=str_to_bool(plan['can_delegate']),
+            is_terminatable=str_to_bool(plan['is_terminatable']),
             wait_for=True
         )
     logger.info('Added all plans from the CSV file!')

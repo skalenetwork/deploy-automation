@@ -14,10 +14,12 @@ role_keys*
 
 .DS_Store
 
-*.csv
+csv/
 allocator.json
 pk_file
 allocator_provision/info.py
 
 build/
 dist/
+
+test-pk.txt

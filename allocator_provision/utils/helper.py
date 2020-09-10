@@ -22,6 +22,9 @@ import json
 import urllib
 import logging
 
+import distutils
+import distutils.util
+
 from web3 import Web3
 from utils.constants import PERMILLE_MULTIPLIER
 
@@ -75,3 +78,7 @@ def permille_to_percent(val):
 
 def percent_to_permille(val):
     return int(val * PERMILLE_MULTIPLIER)
+
+
+def str_to_bool(val):
+    return bool(distutils.util.strtobool(val))
