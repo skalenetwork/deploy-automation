@@ -1,0 +1,7 @@
+name,id,vesting_cliff,total_vesting_duration,vesting_interval_time_unit,vesting_interval,can_delegate,is_terminatable,added
+SAFT0,1,6,36,MONTH,6,TRUE,FALSE,FALSE
+SAFT1,2,5,15,DAY,1,TRUE,FALSE,FALSE
+SAFT2,3,6,12,MONTH,2,TRUE,FALSE,FALSE
+,,,,,,,,
+3_YEARS,4,12,36,MONTH,12,FALSE,TRUE,FALSE
+4_YEARS,5,12,48,MONTH,12,TRUE,TRUE,FALSE

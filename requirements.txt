@@ -1,4 +1,4 @@
-skale.py==4.0dev12
+skale.py==4.0dev19
 Click==7.1.2
 python-dotenv==0.10.3
 texttable==1.6.2
@@ -6,3 +6,6 @@ PyInstaller==3.6
 twine==3.1.1
 wcwidth==0.2.5
 flake8==3.7.9
+
+pytest==5.4.2
+mock==4.0.2
