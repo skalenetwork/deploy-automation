@@ -46,7 +46,7 @@ from utils.logs import init_logger, init_log_dir
 # from utils.constants import (SKALE_ALLOCATOR_CONFIG_FOLDER, SKALE_ALLOCATOR_CONFIG_FILE,
 #                              SKALE_ALLOCATOR_ABI_FILE, LONG_LINE, WALLET_TYPES)
 
-from core import create_plans, add_beneficiates
+from core import create_plans, add_beneficiates, start_vesting
 
 __version__ = '0.0.1'
 logger = logging.getLogger(__name__)
@@ -94,6 +94,22 @@ def _create_plans(csv_filepath, pk_filepath, dry_run, endpoint):
 @cli.command('add-beneficiates', help='Add beneficiates to plans')
 def _add_beneficiates(csv_filepath, pk_filepath, dry_run, endpoint):
     add_beneficiates(csv_filepath, pk_filepath, dry_run, endpoint)
+
+
+@click.argument('csv_filepath')
+@click.argument('pk_filepath')
+@click.option(
+    '--endpoint',
+    help="Ethereum network endpoint"
+)
+@click.option(
+    '--dry-run',
+    is_flag=True,
+    help="Load and show data without actual transactions"
+)
+@cli.command('start-vesting', help='Start vesting for beneficiates from csv file')
+def _start_vesting(csv_filepath, pk_filepath, dry_run, endpoint):
+    start_vesting(csv_filepath, pk_filepath, dry_run, endpoint)
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):

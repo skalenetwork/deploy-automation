@@ -44,6 +44,23 @@ def load_csv_dict(path_to_file):
         return items
 
 
+def start_vesting(csv_filepath, pk_file, dry_run, endpoint):
+    data = load_csv_dict(csv_filepath)
+    print('Vesting will be started for the following beneficiates: \n')
+    print_beneficiates_table(data)
+
+    if dry_run:
+        print('\n Remove option --dry-run to start vesting')
+        return
+    if not click.confirm('\nDo you want to continue?'):
+        print('Operation canceled')
+        return
+    if not endpoint:
+        print('Please provide an endpoint')
+        return
+    start_vesting_allocator(data, pk_file, endpoint)
+
+
 def add_beneficiates(csv_filepath, pk_file, dry_run, endpoint):
     beneficiates_data = load_csv_dict(csv_filepath)
     print('Following beneficiates will be added: \n')
@@ -115,6 +132,17 @@ def add_beneficiates_allocator(beneficiates_data, pk_file, endpoint):
             lockup_amount=lockup_amount_wei,
         )
     logger.info('Added all beneficiates from the CSV file!')
+
+
+def start_vesting_allocator(beneficiates_data, pk_file, endpoint):
+    skale_allocator = init_skale_allocator(endpoint, pk_file)
+    for beneficiary in beneficiates_data:
+        logger.info(f'Starting vesting for {beneficiary["address"]} ({beneficiary["name"]})')
+
+        skale_allocator.allocator.start_vesting(
+            beneficiary_address=beneficiary["address"]
+        )
+    logger.info('Started vesting for all beneficiates from the CSV file!')
 
 
 def init_skale_allocator(endpoint, pk_file):
