@@ -46,9 +46,11 @@ def cli():
 
 
 @click.argument('endpoint')
+@click.option('--all', is_flag=True, help='Show trusted & untrusted validators')
+@click.option('--wei', '-w', is_flag=True, help='Show balances in wei')
 @cli.command('list-validators', help='Show validators list')
-def _list_validators(endpoint):
-    list_validators(endpoint)
+def _list_validators(endpoint, all, wei):
+    list_validators(endpoint, all, wei)
 
 
 if __name__ == '__main__':
