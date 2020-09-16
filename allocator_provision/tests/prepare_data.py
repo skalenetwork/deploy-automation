@@ -1,11 +1,9 @@
 """ Preparation scripts for tests """
 
 from skale.utils.helper import init_default_logger
-from skale.utils.contracts_provision.allocator import transfer_tokens_to_allocator
 
 from core import init_skale_allocator
 from tests.constants import TEST_PK_FILE, ENDPOINT
-
 
 
 def main():
@@ -17,6 +15,7 @@ def main():
     vesting_manager_role = skale_allocator.allocator.vesting_manager_role()
     skale_allocator.allocator.grant_role(vesting_manager_role, skale_allocator.wallet.address)
     # transfer_tokens_to_allocator()
+
 
 if __name__ == '__main__':
     main()
