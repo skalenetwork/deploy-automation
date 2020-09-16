@@ -45,10 +45,7 @@ def cli():
     pass
 
 
-@click.option(
-    '--endpoint',
-    help="Ethereum network endpoint"
-)
+@click.argument('endpoint')
 @cli.command('list-validators', help='Show validators list')
 def _list_validators(endpoint):
     list_validators(endpoint)

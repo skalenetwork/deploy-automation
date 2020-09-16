@@ -19,11 +19,27 @@
 from skale import SkaleManager
 
 from utils.constants import ABI_FILEPATH
+from utils.print_formatters import print_validators_list
 
 
-def list_validators(endpoint):
+def list_validators(endpoint, all=False, wei=False):
     skale_manager = init_skale_manager(endpoint)
-    skale_manager.constants_holder.msr()
+    msr = skale_manager.constants_holder.msr()
+    print(f'Minimum Staking Requirement: {msr}\n')
+    if all:
+        validators_data = skale_manager.validator_service.ls(trusted_only=False)
+    else:
+        validators_data = skale_manager.validator_service.ls(trusted_only=True)
+    for validator in validators_data:
+        balance = skale_manager.token.get_balance(validator['validator_address'])
+        diff = balance - msr
+        if not wei:
+            balance = skale_manager.web3.fromWei(balance, 'ether')
+            diff = skale_manager.web3.fromWei(diff, 'ether')
+        validator['balance'] = balance
+        validator['msr_diff'] = f'+{diff}' if diff > 0 else str(diff)
+        validator['satisfy_msr'] = diff >= 0
+    print_validators_list(validators_data, wei)
 
 
 def init_skale_manager(endpoint):
