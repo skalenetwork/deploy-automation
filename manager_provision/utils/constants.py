@@ -2,7 +2,7 @@
 #
 #   This file is part of deploy-automation
 #
-#   Copyright (C) 2019 SKALE Labs
+#   Copyright (C) 2020 SKALE Labs
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU Affero General Public License as published by
@@ -16,18 +16,26 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from skale import SkaleManager
 
-from utils.constants import ABI_FILEPATH
-
-
-def list_validators(endpoint):
-    skale_manager = init_skale_manager(endpoint)
-    skale_manager.constants_holder.msr()
+import os
+import sys
 
 
-def init_skale_manager(endpoint):
-    return SkaleManager(
-        endpoint=endpoint,
-        abi_filepath=ABI_FILEPATH
-    )
+def _get_env():
+    try:
+        sys._MEIPASS
+    except AttributeError:
+        return 'dev'
+    return 'prod'
+
+
+ENV = _get_env()
+CURRENT_FILE_LOCATION = os.path.dirname(os.path.realpath(__file__))
+
+if ENV == 'dev':
+    ROOT_DIR = os.path.join(CURRENT_FILE_LOCATION, os.pardir)
+else:
+    ROOT_DIR = os.path.join(sys._MEIPASS, 'data')
+
+
+ABI_FILEPATH = os.path.join(ROOT_DIR, 'manager.json')

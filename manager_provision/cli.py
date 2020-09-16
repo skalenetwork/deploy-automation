@@ -37,7 +37,7 @@
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import click
-from manager_provision.core import list_validators
+from core import list_validators
 
 
 @click.group()
@@ -52,3 +52,11 @@ def cli():
 @cli.command('list-validators', help='Show validators list')
 def _list_validators(endpoint):
     list_validators(endpoint)
+
+
+if __name__ == '__main__':
+    cmd_collection = click.CommandCollection(sources=[cli])
+    try:
+        cmd_collection()
+    except Exception as err:
+        print(f'Command execution failed with {err}. Recheck your inputs')
