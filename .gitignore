@@ -6,6 +6,7 @@ contracts_data
 abi.json
 
 __pycache__/
+.idea/
 
 openzeppelin/
 artifacts/
@@ -16,6 +17,7 @@ role_keys*
 
 csv/
 allocator.json
+manager.json
 pk_file
 allocator_provision/info.py
 

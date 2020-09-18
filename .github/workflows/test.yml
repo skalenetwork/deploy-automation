@@ -41,6 +41,7 @@ jobs:
     - name: Deploy manager and allocator contracts
       run: |
         bash ./helper-scripts/deploy_test_allocator.sh
+        cp ./helper-scripts/allocator_contracts_data/unique.json ./allocator_provision/allocator.json
     - name: Run tests
       run: |
         bash ./allocator_provision/scripts/run_tests.sh
