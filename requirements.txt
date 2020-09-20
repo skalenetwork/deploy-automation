@@ -1,4 +1,4 @@
-skale.py==4.0dev19
+skale.py==4.1dev5
 Click==7.1.2
 python-dotenv==0.10.3
 texttable==1.6.2

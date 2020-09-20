@@ -17,31 +17,50 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import csv
 import logging
 
 import click
 
-from skale import SkaleAllocator
-from skale.utils.web3_utils import init_web3
-from skale.wallets import Web3Wallet
 from skale.contracts.allocator.allocator import TimeUnit
 
-from utils.print_formatters import print_plans_table, print_beneficiates_table
-from utils.constants import ABI_FILEPATH
+from utils.print_formatters import (print_plans_table, print_beneficiates_table,
+                                    print_auction_chunk_table)
 from utils.helper import to_wei, str_to_bool
+from utils.web3_utils import init_skale_allocator, init_skale_manager_with_wallet
+from utils.csv_utils import load_csv_lines, load_csv_dict
+
+from auction import split_data, transform_data
 
 logger = logging.getLogger(__name__)
 
 
-def load_csv_dict(path_to_file):
-    items = []
-    with open(path_to_file, mode='r') as infile:
-        reader = csv.DictReader(infile)
-        for row in reader:
-            if row['name'] != '' and str_to_bool(row['added']) is False:
-                items.append(dict(row))
-        return items
+def approve_transfers(csv_filepath, pk_file, chunk_length, dry_run, endpoint):
+    data = load_csv_lines(csv_filepath)
+    splitted_data = split_data(data, chunk_length)
+    n_of_chunks = len(splitted_data)
+
+    print(f'\nNumber of rows: {len(data)}')
+    print(f'Chunk length: {chunk_length}')
+    print(f'Number of chunks: {n_of_chunks}\n')
+
+    if not click.confirm('\nDo you want to continue?'):
+        print('Operation canceled')
+        return
+
+    for i, chunk in enumerate(splitted_data):
+        print('==========================================================')
+        print(f'Processing chunk {i+1}/{n_of_chunks}...')
+        print(f'Items in this chunk: {len(chunk)}\n')
+
+        addresses, amounts, _amounts_skl = transform_data(chunk)
+        print_auction_chunk_table(addresses, amounts, _amounts_skl)
+
+        if not click.confirm('\nApprove transfers for this chunk?'):
+            print('Skipping this chunk\n')
+            continue
+        approve_transfers_manager(addresses, amounts, pk_file, endpoint)
+        print('Transfers in this chunk were approved!')
+    print('All transfers from the csv file were approved!')
 
 
 def start_vesting(csv_filepath, pk_file, dry_run, endpoint):
@@ -145,13 +164,6 @@ def start_vesting_allocator(beneficiates_data, pk_file, endpoint):
     logger.info('Started vesting for all beneficiates from the CSV file!')
 
 
-def init_skale_allocator(endpoint, pk_file):
-    web3 = init_web3(endpoint)
-    with open(pk_file, 'r') as f:
-        pk = str(f.read()).strip()
-    wallet = Web3Wallet(pk, web3)
-    return SkaleAllocator(
-        endpoint=endpoint,
-        abi_filepath=ABI_FILEPATH,
-        wallet=wallet
-    )
+def approve_transfers_manager(addresses, amounts, pk_file, endpoint):
+    skale = init_skale_manager_with_wallet(endpoint, pk_file)
+    skale.token_launch_manager.approve_batch_of_transfers(addresses, amounts)

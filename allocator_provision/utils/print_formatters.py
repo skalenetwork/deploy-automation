@@ -86,3 +86,19 @@ def print_beneficiates_table(plans_data):
             plan['lockup_amount']
         ])
     print(Formatter().table(headers, rows))
+
+
+def print_auction_chunk_table(addresses, amounts, amounts_skl):
+    headers = [
+        'Address',
+        'Amount (SKL)',
+        'Amount (wei)'
+    ]
+    rows = []
+    for i, address in enumerate(addresses):
+        rows.append([
+            address,
+            amounts_skl[i],
+            amounts[i]
+        ])
+    print(Formatter().table(headers, rows))

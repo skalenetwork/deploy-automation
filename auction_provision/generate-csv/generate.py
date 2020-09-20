@@ -20,7 +20,7 @@ def accounts_to_addresses(accounts: list):
 
 
 def generate_amounts(n: int) -> list:
-    return [random.randint(1, MAX_AMOUNT) for i in range(n)]
+    return [random.uniform(1, MAX_AMOUNT) for i in range(n)]
 
 
 def generate_hashes(addresses, amounts):

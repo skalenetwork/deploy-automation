@@ -57,3 +57,4 @@ DEBUG_LOG_FILEPATH = os.path.join(LOG_DATA_PATH, 'debug-allocator-provision.log'
 
 
 ABI_FILEPATH = os.path.join(ROOT_DIR, 'allocator.json')
+MANAGER_ABI_FILEPATH = os.path.join(ROOT_DIR, 'manager.json')
