@@ -46,7 +46,8 @@ from utils.logs import init_logger, init_log_dir
 # from utils.constants import (SKALE_ALLOCATOR_CONFIG_FOLDER, SKALE_ALLOCATOR_CONFIG_FILE,
 #                              SKALE_ALLOCATOR_ABI_FILE, LONG_LINE, WALLET_TYPES)
 
-from core import create_plans, add_beneficiates, start_vesting
+from core import create_plans, add_beneficiates, start_vesting, approve_transfers
+from auction import verify_transfers
 
 __version__ = '0.0.1'
 logger = logging.getLogger(__name__)
@@ -110,6 +111,36 @@ def _add_beneficiates(csv_filepath, pk_filepath, dry_run, endpoint):
 @cli.command('start-vesting', help='Start vesting for beneficiates from csv file')
 def _start_vesting(csv_filepath, pk_filepath, dry_run, endpoint):
     start_vesting(csv_filepath, pk_filepath, dry_run, endpoint)
+
+
+@click.argument('csv_filepath')
+@click.argument('pk_filepath')
+@click.argument('chunk_length')
+@click.option(
+    '--endpoint',
+    help="Ethereum network endpoint",
+    prompt='Ethereum network endpoint'
+)
+@click.option(
+    '--dry-run',
+    is_flag=True,
+    help="Load and show data without actual transactions"
+)
+@cli.command('approve-transfers', help='Approve batch of transfers')
+def _approve_transfers(csv_filepath, pk_filepath, chunk_length, dry_run, endpoint):
+    approve_transfers(csv_filepath, pk_filepath, chunk_length, dry_run, endpoint)
+
+
+@click.argument('csv_filepath')
+@click.option(
+    '--endpoint',
+    help="Ethereum network endpoint",
+    prompt='Ethereum network endpoint'
+)
+
+@cli.command('verify-transfers', help='Verify complete transfers')
+def _verify_transfers(csv_filepath, endpoint):
+    verify_transfers(csv_filepath, endpoint)
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):
