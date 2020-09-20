@@ -54,11 +54,11 @@ def transform_data(chunk_data):
 
 
 def get_address(string):
-    return string.replace(ADDRESS_LINE_PREFIX, '') 
+    return string.replace(ADDRESS_LINE_PREFIX, '')
 
 
 def get_amount(string):
-    return string.replace(AMOUNT_LINE_PREFIX, '') 
+    return string.replace(AMOUNT_LINE_PREFIX, '')
 
 
 def verify_transfers(csv_file, endpoint):
@@ -74,7 +74,8 @@ def verify_transfers(csv_file, endpoint):
         amount_wei = to_wei(amount)
         value = skale.token_launch_manager.approved(address)
 
-        info_str = f'Address: {address}, amount: {amount}, amount_wei: {amount_wei}, contract value: {value}'
+        info_str = f'Address: {address}, amount: {amount}, amount_wei: {amount_wei}, \
+contract value: {value}'
         print(info_str)
         if amount_wei != value:
             raise Exception(info_str)

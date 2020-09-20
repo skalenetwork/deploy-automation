@@ -23,7 +23,8 @@ import click
 
 from skale.contracts.allocator.allocator import TimeUnit
 
-from utils.print_formatters import print_plans_table, print_beneficiates_table, print_auction_chunk_table
+from utils.print_formatters import (print_plans_table, print_beneficiates_table,
+                                    print_auction_chunk_table)
 from utils.helper import to_wei, str_to_bool
 from utils.web3_utils import init_skale_allocator, init_skale_manager_with_wallet
 from utils.csv_utils import load_csv_lines, load_csv_dict

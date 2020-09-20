@@ -92,7 +92,7 @@ def print_auction_chunk_table(addresses, amounts, amounts_skl):
     headers = [
         'Address',
         'Amount (SKL)',
-         'Amount (wei)'
+        'Amount (wei)'
     ]
     rows = []
     for i, address in enumerate(addresses):

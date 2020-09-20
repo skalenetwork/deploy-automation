@@ -137,7 +137,6 @@ def _approve_transfers(csv_filepath, pk_filepath, chunk_length, dry_run, endpoin
     help="Ethereum network endpoint",
     prompt='Ethereum network endpoint'
 )
-
 @cli.command('verify-transfers', help='Verify complete transfers')
 def _verify_transfers(csv_filepath, endpoint):
     verify_transfers(csv_filepath, endpoint)
