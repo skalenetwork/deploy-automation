@@ -75,7 +75,7 @@ Verify complete transfers
 > `manager.json` file should be in the `allocator_provision` folder!
 
 ```bash
-cli.py verify-transfers --endpoint [ENDPOINT] [CSV_FILEPATH]
+python cli.py verify-transfers --endpoint [ENDPOINT] [CSV_FILEPATH]
 ```
 
 Required params:
@@ -84,4 +84,55 @@ Required params:
 
 Arguments:
 
--  `--endpoint` - RPC endpoint of the node in the network where SKALE Allocator is deployed
+-  `--endpoint` - RPC endpoint of the node in the network where SKALE Manager is deployed
+
+
+### Calculate total
+
+Calculate total amount from csv file
+
+```bash
+python cli.py calculate-total [CSV_FILEPATH]
+```
+
+Required params:
+
+1) CSV_FILEPATH - Path to CSV file with beneficiates
+
+### Mint tokens to token launch manager
+
+Mint tokens to token launch manager
+
+> `manager.json` file should be in the `allocator_provision` folder!
+
+```bash
+python cli.py mint-to-tlm --endpoint [ENDPOINT] [PK_FILEPATH] [AMOUNT]
+```
+
+Required params:
+
+1) PK_FILE - Path to file with private key
+2) AMOUNT - Amount to mint (IN WEI!!!)
+
+Arguments:
+
+-  `--endpoint` - RPC endpoint of the node in the network where SKALE Manager is deployed
+
+
+### Complete token launch
+
+Complete token launch
+
+> `manager.json` file should be in the `allocator_provision` folder!
+
+```bash
+python cli.py complete-token-launch --endpoint [ENDPOINT] [PK_FILEPATH]
+```
+
+Required params:
+
+1) PK_FILE - Path to file with private key
+
+Arguments:
+
+-  `--endpoint` - RPC endpoint of the node in the network where SKALE Manager is deployed
