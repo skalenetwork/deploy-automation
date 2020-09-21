@@ -47,7 +47,7 @@ from utils.logs import init_logger, init_log_dir
 #                              SKALE_ALLOCATOR_ABI_FILE, LONG_LINE, WALLET_TYPES)
 
 from core import create_plans, add_beneficiates, start_vesting, approve_transfers
-from auction import verify_transfers
+from auction import verify_transfers, calculate_total, mint_to_tlm, complete_token_launch
 
 __version__ = '0.0.1'
 logger = logging.getLogger(__name__)
@@ -140,6 +140,34 @@ def _approve_transfers(csv_filepath, pk_filepath, chunk_length, dry_run, endpoin
 @cli.command('verify-transfers', help='Verify complete transfers')
 def _verify_transfers(csv_filepath, endpoint):
     verify_transfers(csv_filepath, endpoint)
+
+
+@click.argument('csv_filepath')
+@cli.command('calculate-total', help='Calculate total amount in csv file')
+def _calculate_total(csv_filepath):
+    calculate_total(csv_filepath)
+
+@click.argument('amount')
+@click.argument('pk_filepath')
+@click.option(
+    '--endpoint',
+    help="Ethereum network endpoint",
+    prompt='Ethereum network endpoint'
+)
+@cli.command('mint-to-tlm', help='Mint tokens to the TokenLaunchManager contract')
+def _mint_to_tlm(amount, pk_filepath, endpoint):
+    mint_to_tlm(amount, pk_filepath, endpoint)
+
+
+@click.argument('pk_filepath')
+@click.option(
+    '--endpoint',
+    help="Ethereum network endpoint",
+    prompt='Ethereum network endpoint'
+)
+@cli.command('complete-token-launch', help='Complete token launch')
+def _complete_token_launch(pk_filepath, endpoint):
+    complete_token_launch(pk_filepath, endpoint)
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):

@@ -17,7 +17,11 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from utils.web3_utils import init_skale_manager
+from decimal import *
+
+import click
+
+from utils.web3_utils import init_skale_manager, init_skale_manager_with_wallet
 from utils.helper import to_wei
 from utils.csv_utils import load_csv_lines
 
@@ -80,3 +84,46 @@ contract value: {value}'
         if amount_wei != value:
             raise Exception(info_str)
         print('Values matches!')
+
+
+def calculate_total(csv_file):
+    data = load_csv_lines(csv_file)
+    total_amount = 0
+    total_amount_wei = 0
+    for line in data:
+        amount = get_amount(line[1])
+        amount_wei = to_wei(amount)
+        total_amount += Decimal(amount)
+        total_amount_wei += int(amount_wei)
+    print('DON\'T USE THESE VALUES IN PRODUCTION!\n')
+    print('Total amount: ', total_amount)
+    print('Total amount wei: ', total_amount_wei)
+
+
+def mint_to_tlm(amount, pk_filepath, endpoint):
+    amount = int(amount)
+    skale = init_skale_manager_with_wallet(endpoint, pk_filepath)
+    address = skale.token_launch_manager.address
+
+    balance_before = skale.token.get_balance(address)
+    print(f'\nTokenLaunchManager ({address}) balance: {balance_before} SKL (wei)')
+    print(f'Tokens to be minted: {amount} SKL (wei)')
+
+    if not click.confirm('\nDo you want to continue?'):
+        print('Operation canceled')
+        return
+
+    skale.token.mint(address, amount)
+
+    balance_after = skale.token.get_balance(address)
+    print(f'\nTokenLaunchManager ({address}) balance: {balance_after} SKL (wei)')
+
+
+def complete_token_launch(pk_filepath, endpoint):
+    skale = init_skale_manager_with_wallet(endpoint, pk_filepath)
+    print('THIS ACTION IS IRREVERSIBLE!!!!')
+    if not click.confirm('\nDo you want to continue?'):
+        print('Operation canceled')
+        return
+    skale.token_launch_manager.complete_token_launch()
+    print('Token launch completed!')
