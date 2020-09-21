@@ -147,6 +147,7 @@ def _verify_transfers(csv_filepath, endpoint):
 def _calculate_total(csv_filepath):
     calculate_total(csv_filepath)
 
+
 @click.argument('amount')
 @click.argument('pk_filepath')
 @click.option(
