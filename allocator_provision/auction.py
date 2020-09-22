@@ -51,7 +51,8 @@ def transform_data(chunk_data):
             amount_wei = to_wei(amount)
 
             if int(amount_wei) == 0 or Decimal(amount) == 0:
-                print(f'WARNING: Found an address with zero amount: {address} - {amount}, it will be skipped.')
+                print(f'WARNING: Found an address with zero amount: {address} - {amount}, \
+it will be skipped.')
                 continue
 
             addresses.append(address)
