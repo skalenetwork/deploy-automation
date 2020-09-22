@@ -96,7 +96,7 @@ def verify_transfers(csv_file, endpoint):
 
     for i, line in enumerate(res):
         print(f'Verifying {i+1}/{n_of_unique_rows}')
-        address = get_address(line[0])
+        address = Web3.toChecksumAddress(get_address(line[0]))
         aggregated_amount = line[1]
         value = skale.token_launch_manager.approved(address)
         info_str = f'Address: {address}, amount: {aggregated_amount}, contract value: {value}'
