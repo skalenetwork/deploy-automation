@@ -49,6 +49,11 @@ def transform_data(chunk_data):
             address = get_address(line[0])
             amount = get_amount(line[1])
             amount_wei = to_wei(amount)
+
+            if int(amount_wei) == 0 or Decimal(amount) == 0:
+                print(f'WARNING: Found an address with zero amount: {address} - {amount}, it will be skipped.')
+                continue
+
             addresses.append(address)
             amounts.append(amount_wei)
             _amounts_skl.append(amount)
