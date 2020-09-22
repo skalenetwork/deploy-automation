@@ -17,6 +17,7 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from web3 import Web3
 from decimal import Decimal
 from itertools import groupby
 from operator import itemgetter
@@ -48,7 +49,7 @@ def transform_data(chunk_data):
     _amounts_skl = []
     for line in chunk_data:
         if ADDRESS_LINE_PREFIX in line[0] and AMOUNT_LINE_PREFIX in line[1]:
-            address = get_address(line[0])
+            address = Web3.toChecksumAddress(get_address(line[0]))
             amount = get_amount(line[1])
             amount_wei = to_wei(amount)
 
