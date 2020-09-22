@@ -18,6 +18,8 @@
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from decimal import Decimal
+from itertools import groupby
+from operator import itemgetter
 
 import click
 
@@ -78,16 +80,27 @@ def verify_transfers(csv_file, endpoint):
     n_of_rows = len(data)
 
     for i, line in enumerate(data):
-        print(f'Verifying {i+1}/{n_of_rows}')
-        address = get_address(line[0])
         amount = get_amount(line[1])
         amount_wei = to_wei(amount)
-        value = skale.token_launch_manager.approved(address)
+        line.append(int(amount_wei))
 
-        info_str = f'Address: {address}, amount: {amount}, amount_wei: {amount_wei}, \
-contract value: {value}'
+    res = [(key, sum(map(itemgetter(3), ele)))
+       for key, ele in groupby(sorted(data, key = itemgetter(0)),
+                                                key = itemgetter(0))]
+
+    n_of_unique_rows = len(res)
+
+    print('n_of_rows', n_of_rows)
+    print('n_of_unique_rows', n_of_unique_rows)
+
+    for i, line in enumerate(res):
+        print(f'Verifying {i+1}/{n_of_unique_rows}')
+        address = get_address(line[0])
+        aggregated_amount = line[1]
+        value = skale.token_launch_manager.approved(address)
+        info_str = f'Address: {address}, amount: {aggregated_amount}, contract value: {value}'
         print(info_str)
-        if amount_wei != value:
+        if aggregated_amount != value:
             raise Exception(info_str)
         print('Values matches!')
 
