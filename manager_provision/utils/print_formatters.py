@@ -47,9 +47,9 @@ def print_validators_list(validators, wei):
         'ID',
         'Trusted',
         f'Accepted balance ({m_type})',
-        f'Accepted diff from MSR ({m_type})',
+        f'Diff from MSR ({m_type})',
         f'Proposed balance ({m_type})',
-        'Satisfy MSR'
+        'Max node amount'
     ]
     rows = []
     for validator in validators:
@@ -60,6 +60,6 @@ def print_validators_list(validators, wei):
             validator['accepted_balance'],
             validator['msr_diff'],
             validator['proposed_balance'],
-            validator['satisfy_msr']
+            validator['max_node_amount']
         ])
     print(Formatter().table(headers, rows))

@@ -33,6 +33,7 @@ def list_validators(endpoint, all=False, wei=False):
     for validator in validators_data:
         accepted_balance, proposed_balance = get_validator_balance(skale_manager, validator['id'])
         diff = accepted_balance - msr
+        max_node_amount = accepted_balance // msr
         if not wei:
             if accepted_balance > 0:
                 accepted_balance = skale_manager.web3.fromWei(accepted_balance, 'ether')
@@ -43,7 +44,7 @@ def list_validators(endpoint, all=False, wei=False):
         validator['accepted_balance'] = accepted_balance
         validator['proposed_balance'] = proposed_balance
         validator['msr_diff'] = f'+{diff}' if diff > 0 else str(diff)
-        validator['satisfy_msr'] = diff >= 0
+        validator['max_node_amount'] = max_node_amount
     print_validators_list(validators_data, wei)
 
 
