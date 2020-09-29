@@ -31,7 +31,7 @@ def list_validators(endpoint, all=False, wei=False):
     else:
         validators_data = skale_manager.validator_service.ls(trusted_only=True)
     for validator in validators_data:
-        balance = skale_manager.token.get_balance(validator['validator_address'])
+        balance = get_validator_balance(skale_manager, validator['id'])
         diff = balance - msr
         if not wei:
             balance = skale_manager.web3.fromWei(balance, 'ether')
@@ -40,6 +40,15 @@ def list_validators(endpoint, all=False, wei=False):
         validator['msr_diff'] = f'+{diff}' if diff > 0 else str(diff)
         validator['satisfy_msr'] = diff >= 0
     print_validators_list(validators_data, wei)
+
+
+def get_validator_balance(skale_manager, validator_id):
+    delegations = skale_manager.delegation_controller.get_all_delegations_by_validator(validator_id)
+    total_amount = 0
+    for delegation in delegations:
+        if delegation['status'] == 'ACCEPTED':
+            total_amount += delegation['amount']
+    return total_amount
 
 
 def init_skale_manager(endpoint):

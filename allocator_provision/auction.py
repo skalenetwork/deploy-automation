@@ -83,12 +83,12 @@ def verify_transfers(csv_file, endpoint):
     for i, line in enumerate(data):
         amount = get_amount(line[1])
         amount_wei = to_wei(amount)
-        line[0] =  Web3.toChecksumAddress(get_address(line[0]))
+        line[0] = Web3.toChecksumAddress(get_address(line[0]))
         line.append(int(amount_wei))
 
     res = [(key, sum(map(itemgetter(3), ele)))
-       for key, ele in groupby(sorted(data, key = itemgetter(0)),
-                                                key = itemgetter(0))]
+           for key, ele in groupby(sorted(data, key=itemgetter(0)),
+                                   key=itemgetter(0))]
 
     n_of_unique_rows = len(res)
 
