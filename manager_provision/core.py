@@ -31,15 +31,33 @@ def list_validators(endpoint, all=False, wei=False):
     else:
         validators_data = skale_manager.validator_service.ls(trusted_only=True)
     for validator in validators_data:
-        balance = skale_manager.token.get_balance(validator['validator_address'])
-        diff = balance - msr
+        accepted_balance, proposed_balance = get_validator_balance(skale_manager, validator['id'])
+        diff = accepted_balance - msr
+        max_node_amount = accepted_balance // msr
         if not wei:
-            balance = skale_manager.web3.fromWei(balance, 'ether')
-            diff = skale_manager.web3.fromWei(diff, 'ether')
-        validator['balance'] = balance
+            if accepted_balance > 0:
+                accepted_balance = skale_manager.web3.fromWei(accepted_balance, 'ether')
+            if proposed_balance > 0:
+                proposed_balance = skale_manager.web3.fromWei(proposed_balance, 'ether')
+            if diff > 0:
+                diff = skale_manager.web3.fromWei(diff, 'ether')
+        validator['accepted_balance'] = accepted_balance
+        validator['proposed_balance'] = proposed_balance
         validator['msr_diff'] = f'+{diff}' if diff > 0 else str(diff)
-        validator['satisfy_msr'] = diff >= 0
+        validator['max_node_amount'] = max_node_amount
     print_validators_list(validators_data, wei)
+
+
+def get_validator_balance(skale_manager, validator_id):
+    delegations = skale_manager.delegation_controller.get_all_delegations_by_validator(validator_id)
+    accepted_amount = 0
+    proposed_amount = 0
+    for delegation in delegations:
+        if delegation['status'] == 'ACCEPTED':
+            accepted_amount += delegation['amount']
+        if delegation['status'] == 'PROPOSED':
+            proposed_amount += delegation['amount']
+    return accepted_amount, proposed_amount
 
 
 def init_skale_manager(endpoint):
