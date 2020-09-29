@@ -46,8 +46,9 @@ def print_validators_list(validators, wei):
         'Name',
         'ID',
         'Trusted',
-        f'Token balance ({m_type})',
-        f'Diff from MSR ({m_type})',
+        f'Accepted balance ({m_type})',
+        f'Accepted diff from MSR ({m_type})',
+        f'Proposed balance ({m_type})',
         'Satisfy MSR'
     ]
     rows = []
@@ -56,8 +57,9 @@ def print_validators_list(validators, wei):
             validator['name'],
             validator['id'],
             validator['trusted'],
-            validator['balance'],
+            validator['accepted_balance'],
             validator['msr_diff'],
+            validator['proposed_balance'],
             validator['satisfy_msr']
         ])
     print(Formatter().table(headers, rows))
